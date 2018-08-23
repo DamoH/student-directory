@@ -42,7 +42,7 @@ def print(students)
   count = 1
   while count < students.count do
     students.each_with_index do |student, index|
-      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort), hobbies: #{student[:hobby]}, country of birth: #{student[:country]}, height: #{student[:height]}"
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(30), "hobbies: #{student[:hobby]}".center(30), "country of birth: #{student[:country]}".center(30), "height: #{student[:height]}".center(30), ""
     end
     count += 1
   end
