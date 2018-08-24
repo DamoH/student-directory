@@ -41,14 +41,14 @@ def print(students)
 end
 =end
 
-# Step 8; exercise  (print method using while loop)
+# Step 8; exercise (print method using while loop)
 def print(students)
   count = 1
-  while count < students.count || count == 1 do
+  while count < students.count do
     students.each_with_index do |student, index|
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(30), "hobbies: #{student[:hobby]}".center(30), "country of birth: #{student[:country]}".center(30), "height: #{student[:height]}".center(30), ""
+      count += 1
     end
-    count += 1
   end
 end
 
@@ -73,6 +73,20 @@ def print_shorter_than_12_chars(students)
   end
 end
 
+def cohort_grouping(students)
+  puts "Which cohort names would you like to see?"
+  cohort = gets.chomp
+  names = []
+  students.map do |a_hash|
+    a_hash.each do  |key, value|
+      if value == cohort.capitalize.intern
+        names.push(a_hash[:name])
+      end
+    end
+  end
+  puts names
+end
+
 students = input_students
 #nothing happens until we call the methods
 print_header
@@ -82,3 +96,5 @@ print_footer(students)
 print_begin_letter(students, "D")
 # Step 8; exercise 3
 print_shorter_than_12_chars(students)
+# step 8; exercise 8
+cohort_grouping(students)
