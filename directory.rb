@@ -1,33 +1,40 @@
+@students = [] # an empty array accessible to all methods
+
 def interactive_menu
-  students = []
   loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit" # 9 because we'll be adding more items
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
-    when "1"
-      students = input_students(students)
-    when "2"
-      print_header
-      print(students)
-      print_footer(students)
-    when "9"
-      exit # this will cause the program to terminate
-    else
-      puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
-def input_students(students)
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you meant, try again"
+  end
+end
+
+def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return"
-  # create an empty array
-  # students = []
   # get the first name
   name = gets.chop
   # while the name is not empty, repeat this code
@@ -36,26 +43,24 @@ def input_students(students)
     puts "Please add the cohort month (just hit return if no cohort yet)"
     cohort = gets.chomp
     # adding a default value
-    cohort == "" ? cohort = "no cohort yet" : cohort = cohort.capitalize.intern
+    cohort == "" ? cohort = "not decided on " : cohort = cohort.capitalize.intern
     puts "Please enter hobby (or 'none')"
     hobby = gets.chomp
     puts "Please enter country of birth"
     country = gets.chomp
     puts "Please enter height"
     height = gets.chomp
-    students << {name: name, cohort: cohort, hobby: hobby, country: country, height: height}
+    @students << {name: name, cohort: cohort, hobby: hobby, country: country, height: height}
     # step 8; exercise 9... adding singular/plural "student(s)"
-    if students.count == 1
-      puts "Now we have #{students.count} student"
+    if @students.count == 1
+      puts "Now we have #{@students.count} student"
     else
-      puts "Now we have #{students.count} students"
+      puts "Now we have #{@students.count} students"
     end
     # get another name from the user
     puts "Next student name please (or just hit return to end)"
     name = gets.chomp
   end
-  # return the array of students
-  students
 end
 
 def print_header
@@ -64,31 +69,32 @@ def print_header
 end
 
 # Step 8; exercise (print method using while loop)
-def print(students)
+def print_students_list
   count = 1
-  while count < students.count do
-    students.each_with_index do |student, index|
+  while count < @students.count do
+    @students.each_with_index do |student, index|
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(30), "hobbies: #{student[:hobby]}".center(30), "country of birth: #{student[:country]}".center(30), "height: #{student[:height]}".center(30), ""
       count += 1
     end
   end
 end
 
-def print_footer(students)
-  puts "Overall, we have #{students.count} great student(s)"
+def print_footer
+  puts "Overall, we have #{@students.count} great student(s)"
 end
 
-def print_begin_letter(students, letter)
-  students.each do |student|
+interactive_menu
+
+
+=begin
+def print_begin_letter(letter)
+  @students.each do |student|
     if student[:name].start_with?("#{letter}")
       puts "#{student[:name]} starts with '#{letter}'"
     end
   end
 end
 
-interactive_menu
-
-=begin
 def print_shorter_than_12_chars(students)
   puts "Student(s) names that are less that 12 characters long:"
   students.each do |student|
@@ -113,11 +119,6 @@ def cohort_grouping(students)
 end
 =end
 
-# students = input_students
-# nothing happens until we call the methods
-# print_header
-# print(students)
-# print_footer(students)
 # Step 8; exercise 2
 # print_begin_letter(students, "D")
 # Step 8; exercise 3
