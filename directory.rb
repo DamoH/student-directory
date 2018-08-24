@@ -8,13 +8,17 @@ def input_students
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
+    puts "Please add the cohort month (just hit return if no cohort yet)"
+    cohort = gets.chomp
+    # adding a default value
+    cohort == "" ? cohort = "no cohort yet" : cohort = cohort.capitalize.intern
     puts "Please enter hobby (or 'none')"
     hobby = gets.chomp
     puts "Please enter country of birth"
     country = gets.chomp
     puts "Please enter height"
     height = gets.chomp
-    students << {name: name, cohort: :november, hobby: hobby, country: country, height: height}
+    students << {name: name, cohort: cohort, hobby: hobby, country: country, height: height}
     puts "Now we have #{students.count} student(s)"
     # get another name from the user
     puts "Next student name please (or just hit return to end)"
@@ -25,7 +29,7 @@ def input_students
 end
 
 def print_header
-  puts "The students of my cohort of Villains Academy"
+  puts "The students of Villains Academy"
   puts "-------------"
 end
 
@@ -40,7 +44,7 @@ end
 # Step 8; exercise  (print method using while loop)
 def print(students)
   count = 1
-  while count < students.count do
+  while count < students.count || count == 1 do
     students.each_with_index do |student, index|
       puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(30), "hobbies: #{student[:hobby]}".center(30), "country of birth: #{student[:country]}".center(30), "height: #{student[:height]}".center(30), ""
     end
