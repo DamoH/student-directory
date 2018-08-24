@@ -19,7 +19,12 @@ def input_students
     puts "Please enter height"
     height = gets.chomp
     students << {name: name, cohort: cohort, hobby: hobby, country: country, height: height}
-    puts "Now we have #{students.count} student(s)"
+    # step 8; exercise 9... adding singular/plural "student(s)"
+    if students.count == 1
+      puts "Now we have #{students.count} student"
+    else
+      puts "Now we have #{students.count} students"
+    end
     # get another name from the user
     puts "Next student name please (or just hit return to end)"
     name = gets.chomp
