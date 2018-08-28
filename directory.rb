@@ -55,6 +55,7 @@ def input_students
     puts "Next student name please (or just hit return to end)"
     name = STDIN.gets.chomp
   end
+  puts "You have inputted more student(s) - to save select option 3"
 end
 
 def show_students
@@ -73,6 +74,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "You have successfully saved the students file"
 end
 
 def load_students(filename = ".gitignore/students.csv")
@@ -82,6 +84,7 @@ def load_students(filename = ".gitignore/students.csv")
     build_array(name, cohort)
   end
   file.close
+  puts "You have loaded the students.csv file"
 end
 
 def build_array(name, cohort)
