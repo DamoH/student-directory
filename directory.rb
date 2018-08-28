@@ -15,12 +15,6 @@ def print_menu
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
-def show_students
-  print_header
-  print_students_list
-  print_footer
-end
-
 def process(selection)
   case selection
   when "1"
@@ -50,13 +44,6 @@ def input_students
     cohort = STDIN.gets.chomp
     # adding a default value
     cohort == "" ? cohort = "not decided on " : cohort = cohort.capitalize.intern
-    # puts "Please enter hobby (or 'none')"
-    # hobby = STDIN.gets.chomp
-    # puts "Please enter country of birth"
-    # country = STDIN.gets.chomp
-    # puts "Please enter height"
-    # height = STDIN.gets.chomp
-    # @students << {name: name, cohort: cohort, hobby: hobby, country: country, height: height}
     build_array(name, cohort)
     # step 8; exercise 9... adding singular/plural "student(s)"
     if @students.count == 1
@@ -70,25 +57,10 @@ def input_students
   end
 end
 
-def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
-end
-
-# Step 8; exercise (print method using while loop)
-def print_students_list
-  count = 1
-  while count < @students.count do
-    @students.each_with_index do |student, index|
-      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(30)
-      # , "hobbies: #{student[:hobby]}".center(30), "country of birth: #{student[:country]}".center(30), "height: #{student[:height]}".center(30), ""
-      count += 1
-    end
-  end
-end
-
-def print_footer
-  puts "Overall, we have #{@students.count} great student(s)"
+def show_students
+  print_header
+  print_students_list
+  print_footer
 end
 
 def save_students
@@ -107,10 +79,33 @@ def load_students(filename = ".gitignore/students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    # @students << {name: name, cohort: cohort.to_sym}
     build_array(name, cohort)
   end
   file.close
+end
+
+def build_array(name, cohort)
+  @students <<  {name: name, cohort: cohort.to_sym}
+end
+
+def print_header
+  puts "The students of Villains Academy"
+  puts "-------------"
+end
+
+# Step 8; exercise (print method using while loop)
+def print_students_list
+  count = 1
+  while count < @students.count do
+    @students.each_with_index do |student, index|
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(30)
+      count += 1
+    end
+  end
+end
+
+def print_footer
+  puts "Overall, we have #{@students.count} great student(s)"
 end
 
 def try_load_students
@@ -129,50 +124,5 @@ def try_load_students
   end
 end
 
-def build_array(name, cohort)
-  @students <<  {name: name, cohort: cohort.to_sym}
-end
-
 try_load_students
 interactive_menu
-
-
-=begin
-def print_begin_letter(letter)
-  @students.each do |student|
-    if student[:name].start_with?("#{letter}")
-      puts "#{student[:name]} starts with '#{letter}'"
-    end
-  end
-end
-
-def print_shorter_than_12_chars(students)
-  puts "Student(s) names that are less that 12 characters long:"
-  students.each do |student|
-    if student[:name].count("a-zA-z") < 12
-      puts student[:name]
-    end
-  end
-end
-
-def cohort_grouping(students)
-  puts "Which cohort names would you like to see?"
-  cohort = gets.chomp
-  names = []
-  students.map do |a_hash|
-    a_hash.each do  |key, value|
-      if value == cohort.capitalize.intern
-        names.push(a_hash[:name])
-      end
-    end
-  end
-  puts names
-end
-=end
-
-# Step 8; exercise 2
-# print_begin_letter(students, "D")
-# Step 8; exercise 3
-# print_shorter_than_12_chars(students)
-# step 8; exercise 8
-# cohort_grouping(students)
