@@ -10,8 +10,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the student list"
+  puts "4. Load the student list"
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -24,7 +24,7 @@ def process(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    load_students_from_menu
   when "9" # this will cause the program to terminate
     exit
   else
@@ -65,26 +65,46 @@ def show_students
 end
 
 def save_students
-  # open the file for writing
-  file = File.open(".gitignore/students.csv", "w")
-  #iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
+  puts "please provide file name to 'save' (with .csv suffix)"
+  new_filename = STDIN.gets.chomp # to save a new fileß
+    # open the file for writing
+    File.open(".gitignore/#{new_filename}", "w") do |file|
+      #iterate over the array of students
+      @students.each do |student|
+        student_data = [student[:name], student[:cohort]]
+        csv_line = student_data.join(",")
+        file.puts csv_line
+      end
+    end # step 14 ex.6 - using do..end to open & auto-close file
+    # file.close
   puts "You have successfully saved the students file"
 end
 
-def load_students(filename = ".gitignore/students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    build_array(name, cohort)
-  end
+def load_students_from_menu(filename = ".gitignore/students.csv")
+  puts "please provide file name to 'load' (with .csv suffix), or just hit return for default file value"
+  new_filename = STDIN.gets.chomp
+    if new_filename == ""
+      file = File.open(filename, "r") # use default file to load
+    else
+      file = File.open(".gitignore/#{new_filename}", "r") # load new file
+    end
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      build_array(name, cohort)
+    end
   file.close
-  puts "You have loaded the students.csv file"
+  puts "You have loaded the new file"
+end
+
+def load_students_from_startup(filename = ".gitignore/students.csv")
+  File.open(filename, "r") do |file| # use default file to load
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      build_array(name, cohort)
+    end
+  end # step 14 ex.6 - using do..end to open & auto-close file
+  # file.close
+  puts "You have loaded the #{filename} file"
 end
 
 def build_array(name, cohort)
@@ -115,11 +135,11 @@ def try_load_students
   filename = ARGV.first # first argument from the command line
   # return if filename.nil? # get out of the method if it isn't given
   if filename == nil # load default file if none given on start-up (step 14 ex.2)
-    load_students
+    load_students_from_startup
     return
   end
   if File.exist?(filename) # if it exists
-    load_students(filename)
+    load_students_from_startup(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
