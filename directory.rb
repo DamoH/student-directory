@@ -65,18 +65,13 @@ def show_students
 end
 
 def save_students
+  # using CSV library....
+  require 'csv'
   puts "please provide file name to 'save' (with .csv suffix)"
   new_filename = STDIN.gets.chomp # to save a new file
-    # open the file for writing
-    File.open(".gitignore/#{new_filename}", "w") do |file|
-      #iterate over the array of students
-      @students.each do |student|
-        student_data = [student[:name], student[:cohort]]
-        csv_line = student_data.join(",")
-        file.puts csv_line
-      end
-    end # step 14 ex.6 - using do..end to open & auto-close file
-    # file.close
+    CSV.open(".gitignore/#{new_filename}", "w") do |file|
+      file << @students
+    end
   puts "You have successfully saved the students file"
 end
 
@@ -97,6 +92,7 @@ def load_students_from_menu(filename = ".gitignore/students.csv")
 end
 
 def load_students_from_startup(filename = ".gitignore/students.csv")
+  # using CSV library...
   require 'csv'
   file = CSV.read(filename)
   file.each do |line|
